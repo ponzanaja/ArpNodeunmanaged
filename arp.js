@@ -361,12 +361,12 @@ function getMIB (nodeName, date, time) {
 
     let suminpktU = 0
     let suminpktsErr = 0
-    for (let i = 63; i < 67; i++) {
-      sumInbound += inbound[i].inbound
-      sumOutbound += outbound[i].outbound
-      suminpktU += packetinU[i].pktsinu
-      suminpktsErr += pktsInErr[i].pktsinerr
-    }
+    
+      sumInbound += inbound[0].inbound
+      sumOutbound += outbound[0].outbound
+      suminpktU += packetinU[0].pktsinu
+      suminpktsErr += pktsInErr[0].pktsinerr
+   
     sumInpkts = suminpktU
     if (sumInpkts !== 0) {
       packetloss = (suminpktsErr / sumInpkts) * 100
@@ -411,8 +411,8 @@ function getMIB (nodeName, date, time) {
       time: time
     }
     setTimeout(() => {   
-      let inb =  inbound[64].inbound
-      let outb = outbound[64].outbound 
+      let inb =  inbound[0].inbound
+      let outb = outbound[0].outbound 
       let mainlinkData = {
         in: inb,
         out: outb
