@@ -11,10 +11,9 @@ const pktsInErrOID = [1, 3, 6, 1, 2, 1, 2, 2, 1, 14]
 const pktsOutErrOID = [1, 3, 6, 1, 2, 1, 2, 2, 1, 14]
 const intNameOID = [1, 3, 6, 1, 2, 1, 2, 2, 1, 2]
 const intSpeed = [1, 3, 6, 1, 2, 1, 2, 2, 1, 5]
-const freeMemoryOID = [1, 3, 6, 1, 4, 1, 9, 2, 1, 8, 0] // max 128MB
-const temparatureOID = [1, 3, 6, 1, 4, 1, 9, 9, 13, 1, 3, 1, 3, 1005]
-const cpuUsageOID = [1,3,6,1,4,1,9,2,1,57,0]
-const nodeNIP = '10.4.15.1'
+
+
+const nodeNIP = '192.168.1.252'
 /* root / root1234 10.4.15.1  192.168.1.254*/ 
 const {exec} = require('child_process')
 
@@ -63,8 +62,6 @@ let packetloss = 0
 let temparature = 0
 let humanity = 0
 let temparatureSw = 0
-let cpu = 0
-let memory = 0
 
 /// //////////////////// Network variable End here ///////////////////////
 
@@ -77,7 +74,7 @@ setInterval(() => {
   let time = dateFormat(now, 'HH:MM:ss')
   /// //////////////////// Date variable End here ////////////////////////
   showResult()
-  sendtoFirebase('Node1', date, time)
+  sendtoFirebase('Node3', date, time)
   speedTest().then((result) => {
     let newResult = result.replace(/(\r\n|\n|\r)/gm, '')
     let indexOfdownload = newResult.indexOf('M')
@@ -88,7 +85,7 @@ setInterval(() => {
     download = download.trim()
     upload = upload.trim()
   })
-  getMIB('Node1', date, time)
+  getMIB('Node3', date, time)
   sendTemparature().then((result) => {
     let newResult = result.replace(/(\r\n|\n|\r)/gm, '')
     let indexOfTemparature = newResult.indexOf('T')
@@ -133,7 +130,7 @@ function getOnline (ip) {
 }
 
 function sendtoFirebase (nodeName, date, time) {
-  let check = db.child('-L46xegEleuKcTnJXDjg')
+  let check = db.child('-L46xegEleuKcTnJXDjB')
   let temparatureData = {
     valueh: humanity,
     valuet: temparature,
@@ -147,17 +144,17 @@ function sendtoFirebase (nodeName, date, time) {
   }
   if (check) {
     if(humanity !== "ron" && temparature !== "Wrong"){
-      firebase.database().ref('db/-L46xegEleuKcTnJXDjg').update({
+      firebase.database().ref('db/-L46xegEleuKcTnJXDjB').update({
         temparature: temparatureData,
       })
     }
-    firebase.database().ref('db/-L46xegEleuKcTnJXDjg').update({
+    firebase.database().ref('db/-L46xegEleuKcTnJXDjB').update({
       ip: ipNow,
       onlinenow: online,
       alive:true,
       alive2:true
     })
-    firebase.database().ref().child('db/-L46xegEleuKcTnJXDjg/speedtest').push(spdtestData)
+    firebase.database().ref().child('db/-L46xegEleuKcTnJXDjB/speedtest').push(spdtestData)
   } else {
     let sendData = {
       node: nodeName,
@@ -399,7 +396,7 @@ function getMIB (nodeName, date, time) {
     }
   })
 
-  let check = db.child('-L46xegEleuKcTnJXDjg')
+  let check = db.child('-L46xegEleuKcTnJXDjB')
   if (check) {
     let memoryFree = (memory*100)/128
     let data = {}
@@ -424,12 +421,10 @@ function getMIB (nodeName, date, time) {
     }, 3000)
 
     setTimeout(() => {
-      firebase.database().ref().child('db/-L46xegEleuKcTnJXDjg/inbound').push(insertIn)
-      firebase.database().ref().child('db/-L46xegEleuKcTnJXDjg/outbound').push(insertOut)
-      firebase.database().ref().child('db/-L46xegEleuKcTnJXDjg/packetloss').set(packetloss)
-      firebase.database().ref().child('db/-L46xegEleuKcTnJXDjg/mainlink').set(data)
-      firebase.database().ref().child('db/-L46xegEleuKcTnJXDjg/cpu').set(cpu)
-      firebase.database().ref().child('db/-L46xegEleuKcTnJXDjg/memory').set(memoryFree)
+      firebase.database().ref().child('db/-L46xegEleuKcTnJXDjB/inbound').push(insertIn)
+      firebase.database().ref().child('db/-L46xegEleuKcTnJXDjB/outbound').push(insertOut)
+      firebase.database().ref().child('db/-L46xegEleuKcTnJXDjB/packetloss').set(packetloss)
+    
     }, 9000)
       
    
