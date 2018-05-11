@@ -100,7 +100,7 @@ setInterval(() => {
 
   })
 
-}, 300000)
+}, 5000)
 
 function showResult () {
   getIP().then(getOnline).then((data) => {
@@ -296,10 +296,9 @@ function getMIB (nodeName, date, time) {
       //console.log("intspd = " +JSON.stringify(intSpd))  // out commend for checking data
     }
   })
-
+  let sumInterface = interfaceSpeed[0].intSpd/1048576
   let check = db.child('-L46xegEleuKcTnJXDjB')
   if (check) {
-    let memoryFree = (memory*100)/128
     let data = {}
     let insertIn = {
       value: sumInbound,
@@ -325,7 +324,7 @@ function getMIB (nodeName, date, time) {
       firebase.database().ref().child('db/-L46xegEleuKcTnJXDjB/inbound').push(insertIn)
       firebase.database().ref().child('db/-L46xegEleuKcTnJXDjB/outbound').push(insertOut)
       firebase.database().ref().child('db/-L46xegEleuKcTnJXDjB/packetloss').set(packetloss)
-    
+      firebase.database().ref().child('db/-L46xegEleuKcTnJXDjB/sumInterface').set(sumInterface)
     }, 9000)
       
    
@@ -359,9 +358,9 @@ function calculateUtilize (countInterface,interfaceSpeed,nodeName) {
   let inbound2 = 0
   let outbound1 = 0
   let outbound2 = 0
-  for (let i = 64; i <= 67; i++) {
-    sumInterface += interfaceSpeed[i].intSpd/1048576
-  }
+
+   
+
 
   let data =  dbInfo.find(info => info.node === nodeName)
    inbound1 = data.inbound[data.inbound.length-1].value
