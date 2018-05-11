@@ -94,6 +94,12 @@ setInterval(() => {
     humanity = humanity.trim()
     temparature = temparature.trim()
   })
+  packetTest().then((result) => {
+    let newResult = result.replace(/(\r\n|\n|\r)/gm, '')
+    let indexOfPacket = newResult.lastIndexOf("packet")
+
+  })
+
 }, 300000)
 
 function showResult () {
@@ -245,99 +251,7 @@ function getMIB (nodeName, date, time) {
     }
   })
 //////////////////////////////////  NEW SECTION ///////////////////////////////
-  //getCPUusage
-  deviceNetwork.get({
-    oid: cpuUsageOID
-  }, function (err, letbinds) {
-    if (err) {
-      console.log(err)
-    } else {
-        cpu = letbinds[0].value
-      // console.log(cpu) //out commend for checking data
-    }
-  })
-
-   //getMemory
-   deviceNetwork.get({
-    oid: freeMemoryOID
-  }, function (err, letbinds) {
-    if (err) {
-      console.log(err)
-    } else {
-        memory = letbinds[0].value / 1048576
-       // console.log(memory) // out commend for checking data
-    }
-  })
-
-   //getTempratureIn
-   deviceNetwork.get({
-    oid: temparatureOID
-  }, function (err, letbinds) {
-    if (err) {
-      console.log(err)
-    } else {
-        temparatureSw =  letbinds[0].value
-       // console.log(temparatureSw) // out commend for checking data
-    }
-  })
-//////////////////////////////////  NEW SECTION ///////////////////////////////
-  // getPacketU
-  let packetinU = []
-  deviceNetwork.getSubtree({
-    oid: packetinUOID
-  }, function (err, letbinds) {
-    if (err) {
-      console.log(err)
-    } else {
-      letbinds.forEach((letbind) => {
-        let data = {
-          indexOID: letbind.oid[10],
-          pktsinu: letbind.value
-        }
-        packetinU.push(data)
-      })
-      //  console.log(packetinU) out commend for checking data
-    }
-  })
-
-  // getPktsInErr
-  let pktsInErr = []
-  deviceNetwork.getSubtree({
-    oid: pktsInErrOID
-  }, function (err, letbinds) {
-    if (err) {
-      console.log(err)
-    } else {
-      letbinds.forEach((letbind) => {
-        let data = {
-          indexOID: letbind.oid[10],
-          pktsinerr: letbind.value
-        }
-        pktsInErr.push(data)
-      })
-      //  console.log(pktsInErr) out commend for checking data
-    }
-  })
-
-  // getPktsOutErr
-  let pktsOutErr = []
-  deviceNetwork.getSubtree({
-    oid: pktsOutErrOID
-  }, function (err, letbinds) {
-    if (err) {
-      console.log(err)
-    } else {
-      letbinds.forEach((letbind) => {
-        let data = {
-          indexOID: letbind.oid[10],
-          pktsouterr: letbind.value
-        }
-        pktsOutErr.push(data)
-      })
-      //  console.log(packetinU) out commend for checking data
-    }
-  })
-
+  
   let intName = []
   let countInterface = 0
   deviceNetwork.getSubtree({
@@ -358,21 +272,8 @@ function getMIB (nodeName, date, time) {
       })
        //console.log("countInterface = " + countInterface)  // out commend for checking data
     }
-
-    let suminpktU = 0
-    let suminpktsErr = 0
-    
       sumInbound += inbound[0].inbound
       sumOutbound += outbound[0].outbound
-      suminpktU += packetinU[0].pktsinu
-      suminpktsErr += pktsInErr[0].pktsinerr
-   
-    sumInpkts = suminpktU
-    if (sumInpkts !== 0) {
-      packetloss = (suminpktsErr / sumInpkts) * 100
-    } else {
-      packetloss = 0
-    }
    // console.log('Sum inbound : ' + sumInbound)
     // console.log('Sum PacketIn :' + sumInpkts)
     // console.log('Packetloss : ' + packetloss)
@@ -429,7 +330,7 @@ function getMIB (nodeName, date, time) {
       
    
    
-    sumInbound = sumOutbound = sumInpkts = suminpktU = suminpktsErr = 0
+    sumInbound = sumOutbound = 0
   }
   /*setTimeout(() => {
   calculateUtilize(countInterface,intSpd,nodeName)
@@ -493,6 +394,20 @@ function sendTemparature () {
     })
   })
 }
+
+function packetTest () {
+  return new Promise((resolve, reject) => {
+    exec('tcpdump -i eth0 -c 100 -B 4096', {
+      cwd: '/project1'
+    }, (err, stdout, stderr) => {
+      setTimeout(() => {
+        if (err) return reject("PacketTest Error : " + err)
+        else resolve(`${stdout}`)
+      })
+    })
+  })
+}
+
 /* // Define port number as 3000
 const port = 3000
 // Routes HTTP GET requests to the specified path "/" with the specified callback function
