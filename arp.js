@@ -94,12 +94,6 @@ setInterval(() => {
     humanity = humanity.trim()
     temparature = temparature.trim()
   })
-  packetTest().then((result) => {
-    let newResult = result.replace(/(\r\n|\n|\r)/gm, '')
-    let indexOfPacket = newResult.lastIndexOf("packet")
-
-  })
-
 }, 300000)
 
 function showResult () {
