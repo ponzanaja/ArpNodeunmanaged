@@ -296,7 +296,7 @@ function getMIB (nodeName, date, time) {
       //console.log("intspd = " +JSON.stringify(intSpd))  // out commend for checking data
     }
   })
-  let sumInterface = interfaceSpeed[0].intSpd/1048576
+  let sumInterface = intSpd[0].intSpd/1048576
   let check = db.child('-L46xegEleuKcTnJXDjB')
   if (check) {
     let data = {}
