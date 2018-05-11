@@ -86,14 +86,14 @@ setInterval(() => {
     upload = upload.trim()
   })
   getMIB('Node3', date, time)
-  sendTemparature().then((result) => {
+  /*sendTemparature().then((result) => {
     let newResult = result.replace(/(\r\n|\n|\r)/gm, '')
     let indexOfTemparature = newResult.indexOf('T')
     humanity = newResult.slice(1,indexOfTemparature)
     temparature = newResult.slice(indexOfTemparature+1 )
     humanity = humanity.trim()
     temparature = temparature.trim()
-  })
+  })*/
   packetTest().then((result) => {
     let newResult = result.replace(/(\r\n|\n|\r)/gm, '')
     let indexOfPacket = newResult.lastIndexOf("packet")
