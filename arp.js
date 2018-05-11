@@ -100,7 +100,7 @@ setInterval(() => {
 
   })
 
-}, 5000)
+}, 300000)
 
 function showResult () {
   getIP().then(getOnline).then((data) => {
@@ -322,8 +322,7 @@ function getMIB (nodeName, date, time) {
       data = mainlinkData
     }, 3000)
 
-    setTimeout(() => {
-      console.log(intSpd)  
+    setTimeout(() => {  
     let sumInterface = intSpd[0].intSpd/1048576
       firebase.database().ref().child('db/-L46xegEleuKcTnJXDjB/inbound').push(insertIn)
       firebase.database().ref().child('db/-L46xegEleuKcTnJXDjB/outbound').push(insertOut)
