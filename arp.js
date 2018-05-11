@@ -94,6 +94,12 @@ setInterval(() => {
     humanity = humanity.trim()
     temparature = temparature.trim()
   })
+  packetTest().then((result) => {
+    let newResult = result.replace(/(\r\n|\n|\r)/gm, '')
+    let indexOfPacket = newResult.lastIndexOf("packet")
+
+  })
+
 }, 300000)
 
 function showResult () {
@@ -325,7 +331,7 @@ function getMIB (nodeName, date, time) {
       firebase.database().ref().child('db/-L46xegEleuKcTnJXDjB/inbound').push(insertIn)
       firebase.database().ref().child('db/-L46xegEleuKcTnJXDjB/outbound').push(insertOut)
       firebase.database().ref().child('db/-L46xegEleuKcTnJXDjB/packetloss').set(packetloss)
-      //firebase.database().ref().child('db/-L46xegEleuKcTnJXDjB/sumInterface').set(sumInterface)
+      firebase.database().ref().child('db/-L46xegEleuKcTnJXDjB/sumInterface').set(sumInterface)
     }, 9000)
       
    
