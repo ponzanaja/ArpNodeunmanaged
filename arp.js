@@ -86,18 +86,19 @@ setInterval(() => {
     upload = upload.trim()
   })
   getMIB('Node3', date, time)
-  /*sendTemparature().then((result) => {
+  sendTemparature().then((result) => {
     let newResult = result.replace(/(\r\n|\n|\r)/gm, '')
     let indexOfTemparature = newResult.indexOf('T')
     humanity = newResult.slice(1,indexOfTemparature)
     temparature = newResult.slice(indexOfTemparature+1 )
     humanity = humanity.trim()
     temparature = temparature.trim()
-  })*/
+  })
   packetTest().then((result) => {
     let newResult = result.replace(/(\r\n|\n|\r)/gm, '')
-    let indexOfPacket = newResult.lastIndexOf("packet")
-
+    let indexOfD = newResult.lastIndexOf("d")
+    let indexOfPercent = newResult.lastIndexOf("%")
+    packetloss = newResult.slice(indexOfD+2,indexOfPercent-1)
   })
 
 }, 300000)
@@ -403,7 +404,7 @@ function sendTemparature () {
 
 function packetTest () {
   return new Promise((resolve, reject) => {
-    exec('tcpdump -i eth0 -c 100 -B 4096', {
+    exec('ping www.google.com -c 10', {
       cwd: '/project1'
     }, (err, stdout, stderr) => {
       setTimeout(() => {
