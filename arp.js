@@ -100,7 +100,7 @@ setInterval(() => {
     let newResult = result.replace(/(\r\n|\n|\r)/gm, '')
     let indexOfD = newResult.lastIndexOf("received,")
     let indexOfPercent = newResult.lastIndexOf("%")
-    packetloss = newResult.slice(indexOfD+2 ,indexOfPercent)
+    packetloss = newResult.slice(indexOfD+9 ,indexOfPercent)
     console.log(packetloss)
   })
 
