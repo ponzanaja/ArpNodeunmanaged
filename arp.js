@@ -331,6 +331,7 @@ function getMIB (nodeName, date, time) {
     setTimeout(() => {  
     let sumInterface = intSpd[0].intSpd/1048576
     console.log(sumInterface)
+      console.log(insertIn)
       firebase.database().ref().child('db/'+firebaseKey+'/inbound').push(insertIn)
       firebase.database().ref().child('db/'+firebaseKey+'/outbound').push(insertOut)
       firebase.database().ref().child('db/'+firebaseKey+'/packetloss').set(packetloss)
