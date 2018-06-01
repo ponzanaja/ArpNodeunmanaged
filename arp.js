@@ -100,11 +100,11 @@ setInterval(() => {
     let newResult = result.replace(/(\r\n|\n|\r)/gm, '')
     let indexOfD = newResult.lastIndexOf("received,")
     let indexOfPercent = newResult.lastIndexOf("%")
-    packetloss = newResult.slice(indexOfD+10 ,indexOfPercent-1)
+    packetloss = newResult.slice(indexOfD+3 ,indexOfPercent)
     console.log(packetloss)
   })
 
-}, 60000)
+}, 30000)
 
 function showResult () {
   getIP().then(getOnline).then((data) => {
