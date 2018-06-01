@@ -236,7 +236,7 @@ function getMIB (nodeName, date, time) {
         //console.log(data)
         inbound.push(data)
       })
-      // console.log(inbound) out commend for checking data
+       console.log(inbound) out commend for checking data
     }
   })
   
