@@ -101,6 +101,7 @@ setInterval(() => {
     let indexOfD = newResult.lastIndexOf("d")
     let indexOfPercent = newResult.lastIndexOf("%")
     packetloss = newResult.slice(indexOfD+2,indexOfPercent-1)
+    console.log(packetloss)
   })
 
 }, 60000)
