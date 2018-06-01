@@ -105,7 +105,7 @@ setInterval(() => {
     console.log(packetloss)
   })
 
-}, 30000)
+}, 60000)
 
 function showResult () {
   getIP().then(getOnline).then((data) => {
@@ -236,7 +236,7 @@ function getMIB (nodeName, date, time) {
         //console.log(data)
         inbound.push(data)
       })
-       console.log(inbound) out commend for checking data
+       console.log(inbound) //out commend for checking data
     }
   })
   
