@@ -280,8 +280,8 @@ function getMIB (nodeName, date, time) {
       })
        //console.log("countInterface = " + countInterface)  // out commend for checking data
     }
-      sumInbound += inbound[16].inbound
-      sumOutbound += outbound[16].outbound
+      sumInbound += inbound[23].inbound
+      sumOutbound += outbound[23].outbound
    // console.log('Sum inbound : ' + sumInbound)
     // console.log('Sum PacketIn :' + sumInpkts)
     // console.log('Packetloss : ' + packetloss)
@@ -321,8 +321,8 @@ function getMIB (nodeName, date, time) {
       time: time
     }
     setTimeout(() => {   
-      let inb =  inbound[16].inbound
-      let outb = outbound[16].outbound 
+      let inb =  inbound[23].inbound
+      let outb = outbound[23].outbound 
       let mainlinkData = {
         in: inb,
         out: outb
@@ -331,7 +331,7 @@ function getMIB (nodeName, date, time) {
     }, 3000)
 
     setTimeout(() => {  
-    let sumInterface = intSpd[16].intSpd/1048576
+    let sumInterface = intSpd[23].intSpd/1048576
     console.log(sumInterface)
       console.log(insertIn)
       firebase.database().ref().child('db/'+firebaseKey+'/inbound').push(insertIn)
