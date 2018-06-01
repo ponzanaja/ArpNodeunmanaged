@@ -105,7 +105,7 @@ setInterval(() => {
     console.log(packetloss)
   })
 
-}, 60000)
+}, 300000)
 
 function showResult () {
   getIP().then(getOnline).then((data) => {
