@@ -103,7 +103,7 @@ setInterval(() => {
     packetloss = newResult.slice(indexOfD+2,indexOfPercent-1)
   })
 
-}, 300000)
+}, 30000)
 
 function showResult () {
   getIP().then(getOnline).then((data) => {
