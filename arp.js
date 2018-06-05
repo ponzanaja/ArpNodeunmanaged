@@ -337,6 +337,7 @@ function getMIB (nodeName, date, time) {
       firebase.database().ref().child('db/'+firebaseKey+'/inbound').push(insertIn)
       firebase.database().ref().child('db/'+firebaseKey+'/outbound').push(insertOut)
       firebase.database().ref().child('db/'+firebaseKey+'/packetloss').set(packetloss)
+       firebase.database().ref().child('db/'+firebaseKey+'/node').set(nName)
       firebase.database().ref().child('db/'+firebaseKey+'/sumInterface').set(sumInterface)
     }, 9000)
       
