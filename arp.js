@@ -342,7 +342,7 @@ function getMIB (nodeName, date, time) {
       firebase.database().ref().child('db/'+firebaseKey+'/packetloss').set(packetloss)
        firebase.database().ref().child('db/'+firebaseKey+'/node').set(nName)
       firebase.database().ref().child('db/'+firebaseKey+'/sumInterface').set(sumInterface)
-      firebase.database().ref().child('db/'+firebaseKey'/iplist').set(iplist)
+      firebase.database().ref().child('db/'+firebaseKey+'/iplist').set(iplist)
     }, 9000)
       
    
