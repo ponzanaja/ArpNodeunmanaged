@@ -64,7 +64,7 @@ let packetloss = 0
 let temparature = 0
 let humanity = 0
 let temparatureSw = 0
-
+let iplist = []
 /// //////////////////// Network variable End here ///////////////////////
 
 /* ---------------------------------------------------------------------- */
@@ -114,6 +114,9 @@ function showResult () {
     let lastOfIndex = dataGet.lastIndexOf('host')
     let onlineUser = dataGet.slice(indexOfuser + 1, lastOfIndex-1)
     online = onlineUser
+    let re = /(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})\n/g
+    let found = data.match(re)
+    iplist = found.map(found => found.trim())
   }).catch((error) => {
     console.error(error.message)
   })
@@ -280,8 +283,8 @@ function getMIB (nodeName, date, time) {
       })
        //console.log("countInterface = " + countInterface)  // out commend for checking data
     }
-      sumInbound += inbound[23].inbound
-      sumOutbound += outbound[23].outbound
+      sumInbound += inbound[56].inbound
+      sumOutbound += outbound[56].outbound
    // console.log('Sum inbound : ' + sumInbound)
     // console.log('Sum PacketIn :' + sumInpkts)
     // console.log('Packetloss : ' + packetloss)
@@ -321,8 +324,8 @@ function getMIB (nodeName, date, time) {
       time: time
     }
     setTimeout(() => {   
-      let inb =  inbound[23].inbound
-      let outb = outbound[23].outbound 
+      let inb =  inbound[56].inbound
+      let outb = outbound[56].outbound 
       let mainlinkData = {
         in: inb,
         out: outb
@@ -331,14 +334,15 @@ function getMIB (nodeName, date, time) {
     }, 3000)
 
     setTimeout(() => {  
-    let sumInterface = intSpd[23].intSpd/1048576
-    console.log(sumInterface)
+    let sumInterface = intSpd[56].intSpd/1048576
+    //console.log(sumInterface)
       console.log(insertIn)
       firebase.database().ref().child('db/'+firebaseKey+'/inbound').push(insertIn)
       firebase.database().ref().child('db/'+firebaseKey+'/outbound').push(insertOut)
       firebase.database().ref().child('db/'+firebaseKey+'/packetloss').set(packetloss)
        firebase.database().ref().child('db/'+firebaseKey+'/node').set(nName)
       firebase.database().ref().child('db/'+firebaseKey+'/sumInterface').set(sumInterface)
+      firebase.database().ref().child('db/'+firebaseKey'/iplist').set(iplist)
     }, 9000)
       
    
