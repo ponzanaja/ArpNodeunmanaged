@@ -1,4 +1,4 @@
-/*Testing Update texting from web 1 .....................................*/
+/*Testing Update texting from web */
 const express = require('express')
 const firebase = require('firebase')
 const snmp = require('snmp-native')
