@@ -11,7 +11,7 @@ const pktsInErrOID = [1, 3, 6, 1, 2, 1, 2, 2, 1, 14]
 const pktsOutErrOID = [1, 3, 6, 1, 2, 1, 2, 2, 1, 14]
 const intNameOID = [1, 3, 6, 1, 2, 1, 2, 2, 1, 2]
 const intSpeed = [1, 3, 6, 1, 2, 1, 2, 2, 1, 5]
-
+const fixTime = 10
 
 const nodeNIP = '10.4.15.1'
 const nName = 'Node3'
@@ -65,9 +65,37 @@ let temparature = 0
 let humanity = 0
 let temparatureSw = 0
 let iplist = []
+let flagSend = false
 /// //////////////////// Network variable End here ///////////////////////
 
 /* ---------------------------------------------------------------------- */
+setInterval(() => { 
+    let now = new Date()
+    let date = dateFormat(now, 'd/m/yyyy')
+    let time = dateFormat(now, 'HH:MM:ss')
+    let minutes = now.getMinutes()
+    if(minutes === fixTime && !(flagSend)){
+        speedTest().then((result) => {
+            let newResult = result.replace(/(\r\n|\n|\r)/gm, '')
+            let indexOfdownload = newResult.indexOf('M')
+            let indexOfupload = newResult.indexOf('s')
+            let indexOfupload2 = newResult.lastIndexOf('M')
+            download = newResult.slice(0, indexOfdownload)
+            upload = newResult.slice(indexOfupload + 1, indexOfupload2)
+            download = download.trim()
+            upload = upload.trim()
+            firebase.database().ref().child('db/'+firebaseKey+'/speedtest').push({
+                    valuedown: download,
+                    valueup: upload,
+                    date: date,
+                    time: time  
+            })
+          })
+          flagSend = true
+    }else if(minutes !== fixTime){
+        flagSend = false
+    }
+},30000)
 
 setInterval(() => {
   /// //////////////////// Date variable Start here ///////////////////////
@@ -77,16 +105,6 @@ setInterval(() => {
   /// //////////////////// Date variable End here ////////////////////////
   showResult()
   sendtoFirebase(nName, date, time)
-  speedTest().then((result) => {
-    let newResult = result.replace(/(\r\n|\n|\r)/gm, '')
-    let indexOfdownload = newResult.indexOf('M')
-    let indexOfupload = newResult.indexOf('s')
-    let indexOfupload2 = newResult.lastIndexOf('M')
-    download = newResult.slice(0, indexOfdownload)
-    upload = newResult.slice(indexOfupload + 1, indexOfupload2)
-    download = download.trim()
-    upload = upload.trim()
-  })
   getMIB(nName, date, time)
   sendTemparature().then((result) => {
     let newResult = result.replace(/(\r\n|\n|\r)/gm, '')
@@ -150,12 +168,6 @@ function sendtoFirebase (nodeName, date, time) {
     valuet: temparature,
     valueswtemp: temparatureSw
   }
-  let spdtestData = {
-    valuedown: download,
-    valueup: upload,
-    date: date,
-    time: time
-  }
   if (check) {
     if(humanity !== "ron" && temparature !== "Wrong"){
       firebase.database().ref('db/'+ firebaseKey).update({
@@ -171,7 +183,6 @@ function sendtoFirebase (nodeName, date, time) {
       alive:true,
       alive2:true
     })
-    firebase.database().ref().child('db/'+firebaseKey+'/speedtest').push(spdtestData)
   } else {
     let sendData = {
       node: nodeName,
